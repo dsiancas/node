@@ -1,0 +1,109 @@
+<div class="col-xs-12 col-sm-12 col-md-12">
+  <div class="row trip-editor-options">
+    <div class="col-xs-12 col-sm-4">
+      <div class="btn-group boats-dropdown full-width-btn" dropdown>
+        <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle >
+          <span ng-show="selectionBoat.name && !loading">{{ selectionBoat.name | translate }}</span>
+          <span ng-show="!selectionBoat.name && !loading">{{ selectionBoat.id }}</span>
+          <span ng-show="loading"><i class="fa fa-circle-o-notch fa-spin"></i> <span translate="LOADING"></span></span>
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          <li ng-repeat="boat in boats track by $index">
+            <a ng-click="selectBoat(boat)">
+              <span ng-show="boat.name">{{ boat.name }}</span>
+              <span ng-show="!boat.name">{{ boat.id }}</span>
+              <span class="label label-info pull-right" ng-show="boat.tbd == 1  && current_group !== 'COAST' && current_group === 'ALL'" translate="TBD"></span>
+              <span ng-show="boat.tbd==1 && boat.revised==0 && current_group === 'ALL'" class="pull-right">&nbsp;</span>
+              <span class="label label-warning pull-right" ng-show="boat.revised == 0 && current_group !== 'COAST' && current_group === 'ALL'" translate="NOT_REVISED"></span>
+              <span ng-show="boat.int==1 && boat.revised==0 && current_group === 'ALL'" class="pull-right">&nbsp;</span>
+              <span class="label label-default pull-right" ng-show="boat.int == 1 && current_group !== 'COAST' && current_group === 'ALL'" translate="INT"></span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-4">
+      <div class="btn-group trips-dropdown full-width-btn" dropdown ng-show="!loading && selectionBoat.id">
+
+        <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle ng-class="{'true': 'disabled'}[loadingTrips]">
+          <span ng-show="loadingTrips"><i class="fa fa-circle-o-notch fa-spin"></i> <span translate="LOADING"></span></span>
+          <span ng-show="!loadingTrips">{{ selectionTrip.description | translate }}</span>
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          <li ng-repeat="trip in trips | moreDates">
+          <a ng-click="selectTrip(trip)" 
+          ng-show="trip.enabled === 1 || selectionBoat.orientation !== '-1' ">
+              {{ trip.description }}
+              <span class="label label-warning pull-right" ng-show="trip.sailed === 0 && current_group !== 'COAST'" translate="LAND"></span>
+              <span class="label label-info pull-right" ng-show="trip.sailed === 2  && current_group !== 'COAST' && current_group === 'ALL'" translate="TBD"></span>
+              <span class="label label-default pull-right" ng-show="trip.sailed === 3  && current_group !== 'COAST' && current_group === 'ALL'" translate="INT"></span>
+              <span class="label label-primary pull-right" ng-show="trip.sailed === 1  && current_group !== 'COAST'" translate="SEA"></span>
+              
+              <span class="badge pull-right" 
+                ng-show="trip.events !== 0 && current_group === 'COAST'">
+                {{trip.events}}</span>
+              <span class="label label-danger pull-right" 
+                 ng-show="trip.events !== 0 && current_group === 'COAST'" 
+                 translate="TRIP_EVENTS"></span>
+
+              <span class="badge pull-right" 
+                ng-show="trip.mammals !== 0 && current_group === 'EYE'">
+                {{trip.mammals}}</span>
+              <span class="label label-danger pull-right" 
+                 ng-show="trip.mammals !== 0 && current_group === 'EYE'" 
+                 translate="TRIP_MAMMALS"></span>
+
+              <span ng-show="!trip.revised && current_group === 'ALL'" class="pull-right">&nbsp;</span>
+              <span class="label label-warning pull-right" ng-show="!trip.revised && current_group !== 'COAST' && current_group === 'ALL'" translate="NOT_REVISED"></span>
+              <span ng-show="trip.revised && current_group === 'ALL'" class="pull-right">&nbsp;</span>
+              <span class="label label-success pull-right" ng-show="trip.revised && current_group !== 'COAST' && current_group === 'ALL'" translate="REVISED"></span>
+
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-1">
+      <div ng-show="selectionTrip.amigo_id" id="tripPlace">
+        <div class="btn-group trips-dropdown enable-disable" dropdown>
+          <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle>
+            <span class="label label-warning pull-right" ng-show="selectionTrip.sailed === 0" translate="LAND"></span>
+            <span class="label label-info pull-right" ng-show="selectionTrip.sailed === 2" translate="TBD"></span>
+            <span class="label label-default pull-right" ng-show="selectionTrip.sailed === 3" translate="INT"></span>
+            <span class="label label-primary pull-right" ng-show="selectionTrip.sailed === 1" translate="SEA"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li>
+              <a ng-click="selectOption(1,selectionBoat)">
+                <span class="label label-primary" translate="SEA"></span>
+              </a>
+              <a ng-click="selectOption(0,selectionBoat)">
+                <span class="label label-warning" translate="LAND"></span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-1" ng-show="!selectionTrip.revised" >
+      <div ng-show="selectionTrip.amigo_id" id="tripPlace">
+        <div class="btn-group trips-dropdown enable-disable" dropdown>
+          <button type="button" class="btn btn-default dropdown-toggle" dropdown-toggle>
+            <span class="label label-warning pull-right" ng-show="!selectionTrip.revised && current_group !== 'COAST' && current_group === 'ALL'" translate="NOT_REVISED"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li>
+              <a ng-click="revise(selectionBoat)">
+                <span class="label label-success" translate="REVISED"></span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="pull-right" ng-show="!loading && !!errorBoats">
+      <p translate="errorBoats"></p>
+    </div>
+</div>

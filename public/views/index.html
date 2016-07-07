@@ -1,0 +1,87 @@
+<!-- public/index.html -->
+<!doctype html>
+<html lang="en" ng-app="shellcatchApp">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#157EF4">
+    <title translate="SHELLCATCH_APP">SHELLCATCH_APP</title>
+
+    <base href="/">
+
+    <!-- <title>Starter Node and Angular</title> -->
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="libs/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap.paper.min.css"/>
+    <link rel="stylesheet" href="css/main.css"> <!-- custom styles -->
+    <link rel="stylesheet" href="libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="libs/ng-directive-lazy-image/release/lazy-image-style.min.css"/>
+
+    <!-- JS -->
+    <script src="libs/angular/angular.min.js"></script>
+    <script src="libs/angular-route/angular-route.min.js"></script>
+
+</head>
+<body ng-controller="MainController">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+    
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">
+              <img src="img/shellcatch_logo.png" alt="logo" />
+            </a>
+        </div>
+        <div class="collapse navbar-collapse" id="responsive-nav-menu">
+            <ul class="nav navbar-nav">
+              <li><a href="/viewer">Viewer</a></li>
+              <li><a href="/editor">Editor</a></li>     
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-user"></i> {{ userData.email }} <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a ng-click="openUserSettingsModal()" translate="SETTINGS"></a></li>
+                  <li><a href="/accounts/password/change/" target="_blank" translate="CHANGE_PASSWORD"></a></li>
+                  <li ng-show="selectedLanguage === 'en'"><a ng-click="changeLanguage('es')" translate="BUTTON_LANG_ES"></a></li>
+                  <li ng-show="selectedLanguage === 'es'"><a ng-click="changeLanguage('en')" translate="BUTTON_LANG_EN"></a></li>
+
+                </ul>
+              </li>
+              <li><a href="/accounts/logout" translate="LOGOUT"></a></li>
+            </ul>
+        </div>
+        
+    <!-- HEADER -->
+    <!-- <nav class="navbar navbar-inverse" role="navigation">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">Shellcatch</a>
+        </div> -->
+
+        <!-- LINK TO OUR PAGES. ANGULAR HANDLES THE ROUTING HERE -->
+        <!-- <ul class="nav navbar-nav">
+            <li><a href="/viewer">Viewer</a></li>
+            <li><a href="/nerds">Editor</a></li>
+        </ul>
+    </nav> -->
+
+    <!-- ANGULAR DYNAMIC CONTENT -->
+    <!-- <div ng-view></div> -->
+    </nav>
+        <div id="wrapper" class="container" ng-view>
+        </div>
+    </div>
+
+    <!-- ANGULAR CUSTOM -->
+    <script src="js/appRoutes.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/controllers/MainCtrl.js"></script>
+    <script src="js/controllers/ViewerCtrl.js"></script>
+    <script src="js/directives/boat-trip-selector.js"></script>
+    <script src="js/directives/entry-editor.js"></script>
+    <script src="js/directives/map.js"></script>
+    <script src="js/services/ViewerService.js"></script>
+
+
+</body>
+</html>
